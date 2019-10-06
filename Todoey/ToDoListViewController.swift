@@ -10,7 +10,7 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
 
-    let itemArray : [String] = ["Find Mike", "Destroy Demodogs", "Buy Eggos"]
+    var itemArray : [String] = ["Find Mike", "Destroy Demodogs", "Buy Eggos"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,4 +58,45 @@ class ToDoListViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
+    
+    // MARK -- Add items one by one
+    
+    
+    // what happen when you click the + button
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        // some debugging here
+        print ("+ button clicked")
+        
+        // this is a local var to store the alertTextField contents
+        var textField = UITextField()
+        
+        // create an alert box
+        let alert = UIAlertController(title : "Add New Todoey Item", message : "", preferredStyle : .alert)
+        
+        // create a button that will eventually be added to the alert box
+        let action = UIAlertAction(title: "Add Item", style: .default) {
+            (action) in
+            // what happens once you click this Add item button, inside the alert
+            self.itemArray.append(textField.text!)
+            self.tableView.reloadData()
+        }
+        
+        // create AND add a text field inside the alert box, for typing out your entry item
+        alert.addTextField {
+            (alertTextField) in
+            
+            alertTextField.placeholder = "Create new item"
+            textField = alertTextField
+            
+        }
+
+        // add the button/action to the alert box
+        alert.addAction(action)
+        
+        // present the alert
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
 }
