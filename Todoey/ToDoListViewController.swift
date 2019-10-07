@@ -10,10 +10,21 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
 
+    // used for storing data even after app is terminated
+    let defaults = UserDefaults.standard
+    
     var itemArray : [String] = ["Find Mike", "Destroy Demodogs", "Buy Eggos"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // use the persistent method to make the array display all the data
+        
+        // btw just to make sure that the array is not empty we use the "if let" apprach
+        // that way we can also replace the ! with the ?
+        if let items = defaults.array(forKey: "ToDoListArray") as? [String] {
+            itemArray = items
+        }
     }
 
     // MARK *** Table View Datasource methods ***
@@ -79,6 +90,12 @@ class ToDoListViewController: UITableViewController {
             (action) in
             // what happens once you click this Add item button, inside the alert
             self.itemArray.append(textField.text!)
+            
+            // now let's try to make the data persist accross different app runs
+            // create a key called ToDoListArray
+            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
+            
+            // reload
             self.tableView.reloadData()
         }
         
